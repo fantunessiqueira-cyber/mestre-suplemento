@@ -1,0 +1,995 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mestre do Suplemento - Ebook Interativo</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #1a1a1a;
+            --primary-light: #2a2a2a;
+            --accent: #cccccc;
+            --accent-light: #e0e0e0;
+            --success: #ffffff;
+            --error: #b0b0b0;
+            --text: #f5f5f5;
+            --text-light: #aaaaaa;
+            --bg: #121212;
+            --white: #ffffff;
+            --border: #444444;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--bg);
+            color: #ffffff;
+            line-height: 1.8;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* HEADER */
+        header {
+            background: var(--primary);
+            color: var(--success);
+            padding: 40px 20px;
+            border-radius: 15px;
+            margin-bottom: 40px;
+            box-shadow: 0 10px 40px rgba(255, 255, 255, 0.1);
+            text-align: center;
+            border: 1px solid var(--border);
+        }
+
+        header h1 {
+            font-size: 3em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        header p {
+            font-size: 1.2em;
+            opacity: 0.95;
+        }
+
+        /* NAVIGATION */
+        .nav {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 40px;
+        }
+
+        .nav-btn {
+            background: var(--primary);
+            border: 2px solid var(--accent);
+            padding: 15px 20px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            text-align: center;
+            color: var(--success);
+        }
+
+        .nav-btn:hover,
+        .nav-btn.active {
+            background: var(--accent-light);
+            color: var(--primary);
+            transform: translateY(-3px);
+            box-shadow: none;
+        }
+
+        /* CONTENT SECTIONS */
+        .section {
+            background: var(--primary-light);
+            padding: 40px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 15px rgba(255, 255, 255, 0.1);
+            display: none;
+            border: 1px solid var(--border);
+            color: var(--success);
+        }
+
+        .section.active {
+            display: block;
+            animation: slideIn 0.4s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        h2 {
+            color: var(--accent-light);
+            font-size: 2em;
+            margin-bottom: 20px;
+            border-bottom: 3px solid var(--accent);
+            padding-bottom: 15px;
+        }
+
+        h3 {
+            color: var(--accent);
+            font-size: 1.5em;
+            margin-top: 30px;
+            margin-bottom: 15px;
+        }
+
+        h4 {
+            color: var(--accent);
+            font-size: 1.2em;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+
+        p, ul, ol, li {
+            margin-bottom: 15px;
+            color: #ffffff;
+        }
+
+        /* TABELAS */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        }
+
+        thead {
+            background: var(--primary);
+            color: var(--success);
+            border: 1px solid var(--border);
+        }
+
+        th {
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #666666;
+            color: #ffffff;
+        }
+
+        tbody tr:hover {
+            background: #333333;
+            border-left: 3px solid var(--accent-light);
+        }
+
+        tbody tr:nth-child(odd) {
+            background: #1f1f1f;
+        }
+
+        /* CARDS */
+        .card {
+            background: var(--primary);
+            border-left: 4px solid var(--border);
+            padding: 20px;
+            margin: 15px 0;
+            border-radius: 10px;
+            display: flex;
+            gap: 15px;
+            color: var(--success);
+            box-shadow: none;
+        }
+
+        .card-icon {
+            font-size: 2em;
+            min-width: 50px;
+            color: var(--accent);
+        }
+
+        .card-content {
+            flex: 1;
+        }
+
+        .card-content strong {
+            color: var(--accent-light);
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        /* ARGUMENTOS */
+        .argumento {
+            background: var(--primary);
+            border-left: 4px solid #4caf50;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 8px;
+            font-style: italic;
+            color: var(--success);
+            border: 1px solid var(--border);
+        }
+
+        .argumento::before {
+            content: '💬 ';
+            margin-right: 5px;
+        }
+
+        /* LISTAS */
+        ul, ol {
+            margin-left: 20px;
+            margin-bottom: 15px;
+        }
+
+        li {
+            margin-bottom: 10px;
+        }
+
+        /* GRÁFICOS */
+        .chart-container {
+            background: var(--primary-light);
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            display: flex;
+            gap: 20px;
+            align-items: center;
+            flex-wrap: wrap;
+            border: 1px solid var(--border);
+        }
+
+        .bar-chart {
+            flex: 1;
+            min-width: 300px;
+        }
+
+        .bar {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            gap: 10px;
+        }
+
+        .bar-label {
+            width: 120px;
+            font-weight: 600;
+            color: var(--success);
+        }
+
+        .bar-fill {
+            height: 30px;
+            background: var(--accent);
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary);
+            font-weight: bold;
+            font-size: 0.9em;
+        }
+
+        /* COMPARAÇÃO */
+        .comparison {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .comp-box {
+            background: var(--primary-light);
+            border: 2px solid var(--border);
+            padding: 20px;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+            color: var(--success);
+        }
+
+        .comp-box:hover {
+            border-color: var(--accent-light);
+            transform: translateY(-5px);
+            box-shadow: none;
+        }
+
+        .comp-title {
+            font-size: 1.3em;
+            font-weight: 700;
+            color: var(--accent-light);
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--accent);
+        }
+
+        .comp-item {
+            margin-bottom: 12px;
+            display: flex;
+            gap: 10px;
+        }
+
+        .comp-label {
+            font-weight: 600;
+            color: var(--text-light);
+            min-width: 100px;
+        }
+
+        .comp-value {
+            color: var(--accent-light);
+            font-weight: 700;
+        }
+
+        /* PROTOCOLO */
+        .protocol {
+            background: var(--primary-light);
+            border-left: 4px solid var(--accent);
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+            color: var(--success);
+        }
+
+        .protocol-step {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .step-number {
+            background: var(--accent);
+            color: var(--primary);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+
+        .step-content strong {
+            color: var(--accent-light);
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .ebook-content {
+            color: #ffffff;
+        }
+
+        .ebook-section {
+            margin-bottom: 25px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #444444;
+        }
+
+        .ebook-section h4 {
+            color: var(--accent-light);
+            margin-top: 20px;
+            margin-bottom: 12px;
+        }
+
+        .ebook-section h5 {
+            color: var(--accent);
+            font-size: 1.1em;
+            margin-top: 15px;
+            margin-bottom: 10px;
+        }
+
+        .ebook-section p {
+            color: #ffffff;
+            margin-bottom: 12px;
+            line-height: 1.7;
+        }
+
+        .ebook-section ul {
+            color: #ffffff;
+        }
+
+        .ebook-section li {
+            color: #ffffff;
+        }
+
+        /* DESTACADOS */
+        .highlight {
+            background: var(--primary);
+            padding: 10px 15px;
+            border-radius: 5px;
+            font-weight: 600;
+            color: var(--accent);
+            display: inline-block;
+            margin: 0 5px;
+        }
+
+        .badge {
+            display: inline-block;
+            background: #4caf50;
+            color: #000000;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            font-weight: 600;
+            margin: 2px;
+        }
+
+        /* FOOTER */
+        footer {
+            text-align: center;
+            padding: 30px 20px;
+            color: var(--text-light);
+            margin-top: 50px;
+            border-top: 2px solid var(--border);
+        }
+
+        /* RESPONSIVO */
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 2em;
+            }
+
+            .nav {
+                grid-template-columns: 1fr;
+            }
+
+            section {
+                padding: 20px;
+            }
+
+            h2 {
+                font-size: 1.5em;
+            }
+
+            table {
+                font-size: 0.9em;
+            }
+
+            th, td {
+                padding: 10px;
+            }
+
+            .chart-container {
+                flex-direction: column;
+            }
+        }
+
+        /* PRINT */
+        @media print {
+            .nav {
+                display: none;
+            }
+
+            .section {
+                page-break-inside: avoid;
+                box-shadow: none;
+                border: 1px solid var(--border);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- HEADER -->
+        <header>
+            <h1>💪 MESTRE DO SUPLEMENTO</h1>
+            <p>Treinamento Completo em Vendas de Suplementos com Base Científica</p>
+        </header>
+
+        <!-- NAVEGAÇÃO -->
+        <div class="nav">
+            <button class="nav-btn active" onclick="showSection('inicio')">📖 Início</button>
+            <button class="nav-btn" onclick="showSection('ebook')">📖 E-Book</button>
+            <button class="nav-btn" onclick="showSection('modulos')">📚 8 Módulos</button>
+            <button class="nav-btn" onclick="showSection('comparacoes')">⚖️ Comparações</button>
+            <button class="nav-btn" onclick="showSection('objecoes')">🎯 Objeções</button>
+            <button class="nav-btn" onclick="showSection('protocolos')">📋 Protocolos</button>
+            <button class="nav-btn" onclick="showSection('tabelas')">📊 Tabelas</button>
+        </div>
+
+        <!-- SEÇÃO: E-BOOK -->
+        <section id="ebook" class="section">
+            <h2>📖 E-Book Completo - Apostila Mestre da Suplementação</h2>
+            
+            <div class="ebook-content">
+                <h3>📚 APOSTILA MESTRE: A CIÊNCIA DEFINITIVA DA SUPLEMENTAÇÃO</h3>
+                
+                <h3>📖 INTRODUÇÃO: O MAPA DEFINITIVO DA SUPLEMENTAÇÃO</h3>
+                <p>Seja bem-vindo(a) ao guia mais completo e cientificamente embasado sobre suplementação que você encontrará.</p>
+                
+                <p>Vivemos na era do fitness e da saúde otimizada, mas este mercado é, infelizmente, dominado pelo ruído. A cada dia, somos bombardeados por promessas vazias, fórmulas milagrosas e estratégias contraditórias nas redes sociais. Esse cenário cria confusão, leva a gastos desnecessários e, o mais importante, compromete seus resultados.</p>
+                
+                <p>A missão desta apostila é clara: transformar você em um consumidor consciente e autônomo. Este material foi construído com base em evidências de Nível A, equilibrando o conhecimento acadêmico com a sabedoria empírica.</p>
+                
+                <p><strong>Sua jornada para o conhecimento consciente começa agora.</strong></p>
+
+                <div class="ebook-section">
+                    <h4>🔎 GLOSSÁRIO TÉCNICO E CONCEITUAL</h4>
+                    <p>(Para consulta rápida e domínio da linguagem técnica)</p>
+                    
+                    <ul>
+                        <li><strong>Amino Spiking:</strong> Fraude onde aminoácidos baratos (ex: Glicina) são adicionados para inflar artificialmente a contagem de proteína no rótulo.</li>
+                        <li><strong>Aminograma:</strong> O perfil completo de aminoácidos presentes em uma fonte proteica.</li>
+                        <li><strong>ATP (Adenosina Trifosfato):</strong> A principal molécula de energia celular. A Creatina a regenera.</li>
+                        <li><strong>Bicarbonato de Sódio:</strong> Tampão extracelular que neutraliza a acidose muscular em exercícios de alta intensidade.</li>
+                        <li><strong>Beta-Alanina:</strong> Aminoácido que forma a Carnosina, neutralizando o ácido lático.</li>
+                        <li><strong>Déficit Calórico:</strong> Gasto energético maior do que o consumo calórico. A única causa da perda de gordura.</li>
+                        <li><strong>DHA e EPA:</strong> Ácidos graxos ômega-3 essenciais, com foco cognitivo (DHA) e anti-inflamatório (EPA).</li>
+                        <li><strong>Glutamina:</strong> Aminoácido Condicionalmente Essencial, vital para a saúde intestinal e imunidade.</li>
+                        <li><strong>HMB (Hidroximetilbutirato):</strong> Metabólito da Leucina com função primária anticatabólica (preserva o músculo).</li>
+                        <li><strong>IFOS (International Fish Oil Standards):</strong> Selo que atesta a pureza do Ômega-3 (ausência de metais pesados).</li>
+                        <li><strong>IG (Índice Glicêmico):</strong> Medida da velocidade com que um alimento eleva a glicose no sangue.</li>
+                        <li><strong>Insulina:</strong> Hormônio anabólico que transporta nutrientes (glicose, aminoácidos, creatina) para dentro das células.</li>
+                        <li><strong>Ioimbina:</strong> Bloqueador de receptores Alfa-2, facilitando a queima de gordura em áreas resistentes (abdômen inferior).</li>
+                        <li><strong>Lipólise:</strong> O processo metabólico de quebra e mobilização das células de gordura.</li>
+                        <li><strong>MCT (Triglicerídeos de Cadeia Média):</strong> Gordura que é rapidamente convertida em corpos cetônicos para energia.</li>
+                        <li><strong>Parestesia:</strong> Sensação inofensiva de formigamento causada pela suplementação de Beta-Alanina.</li>
+                        <li><strong>VB (Valor Biológico):</strong> Medida da eficiência com que uma proteína é absorvida e utilizada pelo corpo.</li>
+                    </ul>
+                </div>
+
+                <div class="ebook-section">
+                    <h4>MÓDULO 1: OS FUNDAMENTOS E A MATRIZ ALIMENTAR</h4>
+                    
+                    <h5>1.1. Base de Tudo: Dieta, Carências e a Prioridade da Comida Sólida</h5>
+                    <p>A comida fornece a matriz alimentar complexa (vitaminas, fibras e fitoquímicos) que nenhum suplemento consegue replicar. O suplemento entra para cobrir carências crônicas (ex: Magnésio, Vitamina D) e fornecer nutrientes em momentos estratégicos.</p>
+                    
+                    <h5>1.2. Praticidade: O Papel da Suplementação na Rotina Acelerada</h5>
+                    <p>O Whey Protein é insubstituível em conveniência e digestibilidade imediata, permitindo o consumo de proteína no timing ideal sem sobrecarregar o sistema digestivo.</p>
+                    
+                    <h5>1.3. A Célula de Construção: Valor Biológico (VB) e Aminograma</h5>
+                    <p><strong>VB:</strong> O Whey Protein é o padrão-ouro (VB 104-150), superando o ovo.</p>
+                    <p><strong>Aminograma:</strong> O mapa que mostra a presença dos Aminoácidos Essenciais (AAEs), que são os verdadeiros blocos construtores.</p>
+                    
+                    <h5>1.4. A Família Whey, Caseína e Proteínas Vegetais</h5>
+                    <ul>
+                        <li><strong>WPC (Concentrado):</strong> Melhor custo-benefício, contém lactose e gordura.</li>
+                        <li><strong>WPI (Isolado):</strong> >90% proteína, quase zero lactose/gordura. Ideal para restrição calórica.</li>
+                        <li><strong>Caseína:</strong> Proteína de absorção lenta (até 7h), excelente agente anticatabólico (uso noturno).</li>
+                        <li><strong>Proteínas Vegetais:</strong> O blend (ex: Ervilha + Arroz) é essencial para garantir um Aminograma completo e de alto VB.</li>
+                    </ul>
+                    
+                    <h5>1.5. ⚠ Alerta Máximo: A Fraude do Amino Spiking</h5>
+                    <p>Adição de aminoácidos baratos (Glicina, Taurina) para simular um teor de proteína mais alto. Sinal de Alerta: Aminoácidos isolados listados na lista de ingredientes do rótulo logo após a proteína.</p>
+                </div>
+
+                <div class="ebook-section">
+                    <h4>MÓDULO 2: MICRONUTRIENTES E SAÚDE ESTRUTURAL</h4>
+                    
+                    <h5>2.1. Otimizadores Hormonais e Imunológicos</h5>
+                    <ul>
+                        <li><strong>Vitamina D:</strong> Atua como hormônio esteroide, crucial para imunidade e saúde óssea. Sua deficiência é global e a suplementação é frequentemente necessária.</li>
+                        <li><strong>Vitamina B12:</strong> Essencial para a função nervosa e formação do sangue. Suplementação é obrigatória para veganos.</li>
+                        <li><strong>Zinco:</strong> Vital para a função imune e para a produção de testosterona.</li>
+                    </ul>
+                    
+                    <h5>2.2. Eletrolíticos e Repouso: Tipos de Magnésio</h5>
+                    <p>O Magnésio é co-fator na produção de ATP e relaxamento. Sua eficácia varia pelo tipo:</p>
+                    <ul>
+                        <li><strong>Magnésio Glicinato:</strong> Alta absorção. Ideal para relaxamento e sono.</li>
+                        <li><strong>Magnésio Treonato:</strong> Foco na função cognitiva e memória (melhor absorção cerebral).</li>
+                        <li><strong>Magnésio Dimalato:</strong> Ideal para energia e suporte à função muscular (menos foco em sono).</li>
+                    </ul>
+                    
+                    <h5>2.3. Suporte Estrutural: Colágeno Tipo 1 e Tipo 2</h5>
+                    <ul>
+                        <li><strong>Colágeno Tipo 1 (Hidrolisado):</strong> Foco na pele, cabelo, unhas e ossos (uso estético/estrutural geral).</li>
+                        <li><strong>Colágeno Tipo 2 (Não Desnaturado):</strong> Foco na cartilagem articular e redução da dor (uso ortopédico).</li>
+                    </ul>
+                    
+                    <h5>2.4. O Hormônio do Sono: Melatonina</h5>
+                    <p><strong>Mecanismo:</strong> Regulador do ciclo circadiano (timing do sono). Não é um sedativo.</p>
+                    <p><strong>Uso:</strong> Melhoria da qualidade do sono e ajuste de fuso horário. Doses baixas (0.5mg a 3mg) costumam ser as mais eficazes.</p>
+                </div>
+
+                <div class="ebook-section">
+                    <h4>MÓDULO 3: GORDURAS, FIBRAS E O METABOLISMO ESSENCIAL</h4>
+                    
+                    <h5>3.1. O Fator Anti-Inflamatório: Ômega-3 (EPA/DHA)</h5>
+                    <p><strong>Função:</strong> O EPA possui forte ação anti-inflamatória, crucial para a recuperação muscular (DOMS).</p>
+                    <p><strong>Dosagem:</strong> 1.500 mg a 3.000 mg de EPA + DHA combinados por dia.</p>
+                    <p><strong>Qualidade:</strong> O selo IFOS é indispensável para garantir a pureza e a ausência de metais pesados.</p>
+                    
+                    <h5>3.2. Fibras e Absorção: Prebióticos e Saúde Intestinal</h5>
+                    <p>As fibras são o "alimento da Nutrição":</p>
+                    <ul>
+                        <li><strong>Fibras Solúveis:</strong> Controlam a glicemia e o colesterol.</li>
+                        <li><strong>Prebióticos (Inulina):</strong> Nutrem as bactérias intestinais, maximizando a absorção de todos os outros nutrientes.</li>
+                    </ul>
+                    
+                    <h5>3.3. Energia Cetogênica: Óleo de MCT (Medium-Chain Triglycerides)</h5>
+                    <p><strong>Mecanismo Único:</strong> Absorvido diretamente e rapidamente convertido em corpos cetônicos no fígado.</p>
+                    <p><strong>Uso:</strong> Fonte de energia rápida e limpa para o cérebro e para atletas em dieta low-carb ou cetogênica.</p>
+                    
+                    <h5>3.4. O Escudo Anticatabólico: HMB (Hidroximetilbutirato)</h5>
+                    <p><strong>Uso Estratégico:</strong> Mais eficaz em cenários de alto estresse catabólico (déficit calórico severo ou overtraining), onde ajuda a preservar a massa magra.</p>
+                    <p><strong>Dosagem:</strong> 3g por dia, divididas.</p>
+                </div>
+
+                <div class="ebook-section">
+                    <h4>MÓDULO 4: CARBOIDRATOS E A SINALIZAÇÃO ANABÓLICA</h4>
+                    
+                    <h5>4.1. Glicogênio e Insulina: O Papel Anabólico</h5>
+                    <p>O consumo de carboidrato (especialmente de alto IG) provoca um pico de Insulina, o hormônio que atua como sinalizador anabólico, transportando nutrientes para a célula muscular.</p>
+                    
+                    <h5>4.2. Carbos Rápidos (Alto IG)</h5>
+                    <p><strong>Maltodextrina e Dextrose:</strong> Priorizam o pico de insulina e a reposição urgente de glicogênio no pós-treino (janela de 30-60 minutos).</p>
+                    <p><strong>Regra:</strong> Consumir 0.8g a 1.2g de Carboidrato por kg de peso corporal, acompanhado de Proteína, no pós-treino.</p>
+                    
+                    <h5>4.3. Carbos Inteligentes (Baixo IG)</h5>
+                    <ul>
+                        <li><strong>Palatinose (Isomaltulose):</strong> Possui absorção lenta e estável. Fornece energia prolongada sem pico de insulina, ideal para o endurance e pré-treinos longos.</li>
+                        <li><strong>Waxy Maize:</strong> Absorção mais gradual do que a Malto, bom para reposição de glicogênio sem desconforto gástrico.</li>
+                    </ul>
+                    
+                    <h5>4.4. Hipercalóricos: Análise de Custo-Benefício</h5>
+                    <p>Úteis para hard gainers ou atletas de alto volume. Verifique a fonte do carboidrato: Priorize Palatinose ou Aveia, não açúcar simples.</p>
+                </div>
+
+                <div class="ebook-section">
+                    <h4>MÓDULO 5: OTIMIZADORES DE FORÇA E RESISTÊNCIA (O BIG TWO)</h4>
+                    
+                    <h5>5.1. Creatina Monohidratada</h5>
+                    <p><strong>Mecanismo:</strong> Regenera o ATP rapidamente via Fosfocreatina (CP), aumentando a força e o volume de treino (mais repetições).</p>
+                    <p><strong>Recomendação:</strong> Monohidratada é o padrão-ouro (5g/dia, uso crônico). Formas alternativas não comprovam superioridade.</p>
+                    
+                    <h5>5.2. Beta-Alanina</h5>
+                    <p><strong>Mecanismo:</strong> Aumenta os estoques de Carnosina para tamponar o ácido lático. Aumenta a resistência em esforços de 8 a 15 repetições.</p>
+                    <p><strong>Parestesia:</strong> Efeito colateral inofensivo de formigamento. Mitigado dividindo-se a dose diária (3g a 6g).</p>
+                    
+                    <h5>5.3. A Resposta à Fadiga: Bicarbonato de Sódio</h5>
+                    <p><strong>Uso Agudo:</strong> Tamponamento extracelular para esforços de alta intensidade e curta duração.</p>
+                    <p><strong>⚠ Risco GI:</strong> Exige testes prévios, pois o risco de desconforto gastrointestinal é muito alto.</p>
+                    
+                    <h5>5.4. Ressíntese de Energia: Ribose</h5>
+                    <p>Suplementação visa acelerar a ressíntese de ATP após o esgotamento extremo dos estoques de energia.</p>
+                </div>
+
+                <div class="ebook-section">
+                    <h4>MÓDULO 6: AMINOÁCIDOS ISOLADOS E OTIMIZAÇÃO DE PERFORMANCE</h4>
+                    
+                    <h5>6.1. Aminoácidos Essenciais (EAAs)</h5>
+                    <p>A síntese proteica e o anabolismo exigem a presença de TODOS os 9 EAAs. A suplementação com EAAs completos é mais eficaz para a hipertrofia do que apenas com BCAAs isolados.</p>
+                    
+                    <h5>6.2. Foco Intestinal/Imune: Glutamina</h5>
+                    <p><strong>Uso Suportado:</strong> Suporte à saúde da mucosa intestinal e ao sistema imune, sendo o combustível preferencial das células do intestino.</p>
+                    <p><strong>Uso Controverso:</strong> Seu efeito como único construtor muscular é questionável em indivíduos com dieta rica em proteínas.</p>
+                    
+                    <h5>6.3. Otimizadores de Fluxo: L-Citrulina</h5>
+                    <p><strong>Mecanismo:</strong> Precursor de Óxido Nítrico (NO), que causa vasodilatação, melhorando a entrega de nutrientes e oxigênio ao músculo (pump).</p>
+                    <p><strong>Citrulina vs. Arginina:</strong> A Citrulina é mais eficaz para elevar os níveis plasmáticos de Arginina do que a própria Arginina.</p>
+                    
+                    <h5>6.4. Aminoácidos Específicos</h5>
+                    <ul>
+                        <li><strong>L-Triptofano:</strong> Precursor de Serotonina/Melatonina, útil para qualidade do sono e humor.</li>
+                        <li><strong>Taurina:</strong> Regulação osmótica e suporte à função muscular/nervosa.</li>
+                    </ul>
+                </div>
+
+                <div class="ebook-section">
+                    <h4>MÓDULO 7: TERMOGÊNICOS, QUEIMA DE GORDURA E O CONTROLE ESTÍMULO</h4>
+                    
+                    <h5>7.1. O Gatilho da Queima: Cafeína</h5>
+                    <p><strong>Mecanismo:</strong> Potente lipolítico (libera gordura) e redutor da percepção de esforço.</p>
+                    <p><strong>Dosagem de Performance:</strong> 3mg a 6mg por kg de peso corporal.</p>
+                    <p><strong>Risco:</strong> Tolerância e risco cardiovascular/ansiedade.</p>
+                    
+                    <h5>7.2. Gordura Disponível: L-Carnitina e CLA</h5>
+                    <ul>
+                        <li><strong>L-Carnitina:</strong> Transporta gordura para a mitocôndria. Eficácia marginal em indivíduos não deficientes.</li>
+                        <li><strong>CLA (Ácido Linoleico Conjugado):</strong> Efeito na perda de gordura é clinicamente insignificante em humanos. Não deve ser priorizado.</li>
+                    </ul>
+                    
+                    <h5>7.3. Gordura Resistente: Ioimbina</h5>
+                    <p><strong>Uso:</strong> Bloqueia receptores Alfa-2 nas áreas de gordura resistente. Deve ser consumida em jejum, longe da insulina.</p>
+                    <p><strong>⚠ Risco Máximo:</strong> Alto potencial de causar ansiedade, taquicardia e picos de pressão.</p>
+                    
+                    <h5>7.4. Termogênese Suave</h5>
+                    <ul>
+                        <li><strong>EGCG (Chá Verde):</strong> Aumenta a quebra de gordura e é um potente antioxidante.</li>
+                        <li><strong>Capsaicina (Pimenta):</strong> Induz termogênese por aquecimento, seguro para quem não tolera estimulantes.</li>
+                    </ul>
+                </div>
+
+                <div class="ebook-section">
+                    <h4>MÓDULO 8: SEGURANÇA, PATOLOGIAS E A FRONTEIRA HORMONAL</h4>
+                    
+                    <h5>8.1. Regras de Ouro: Dosagens Seguras e Toxicidade</h5>
+                    <ul>
+                        <li><strong>Vitaminas Lipossolúveis (A, D, E, K):</strong> Armazenadas e podem causar toxicidade em excesso.</li>
+                        <li><strong>Minerais (Ferro):</strong> Suplementação só deve ser feita com exame laboratorial e acompanhamento médico.</li>
+                    </ul>
+                    
+                    <h5>8.2. Interações com Patologias</h5>
+                    <ul>
+                        <li><strong>Doença Renal:</strong> Cautela com alta ingestão de Proteína e Creatina.</li>
+                        <li><strong>Cardíaca/Ansiedade:</strong> Evitar estimulantes (Cafeína, Ioimbina) que aumentam a frequência e a pressão arterial.</li>
+                        <li><strong>Diabetes:</strong> Carboidratos de Alto IG (Dextrose) exigem monitoramento glicêmico.</li>
+                    </ul>
+                    
+                    <h5>8.3. Mitos Fitoterápicos (Atenuantes Hormonais)</h5>
+                    <ul>
+                        <li><strong>Tribulus Terrestris e Fenogrego:</strong> Evidência científica fraca ou nula para aumento da testosterona em homens saudáveis. Podem ter um efeito leve na libido.</li>
+                        <li><strong>Maca Peruana:</strong> Não afeta hormônios, mas pode melhorar a disposição e libido via sistema nervoso central.</li>
+                    </ul>
+                    
+                    <h5>8.4. 🔴 A Fronteira Proibida: Pró-Hormonais e DHEA</h5>
+                    <p><strong>Não são suplementos:</strong> São moduladores hormonais que devem ser tratados como medicamentos.</p>
+                    <p><strong>Risco:</strong> Podem causar toxicidade hepática severa, desregulação hormonal permanente (exigindo TPC) e não devem ser utilizados sem supervisão médica especializada.</p>
+                </div>
+
+                <div class="ebook-section" style="background: #2a2a2a; padding: 20px; border-radius: 8px; border-left: 4px solid var(--accent-light);">
+                    <h4 style="color: var(--accent-light); margin-top: 0;">🚀 CONCLUSÃO FINAL</h4>
+                    <p>Sua jornada de conhecimento está completa. Você não é mais um alvo fácil para tendências passageiras.</p>
+                    
+                    <p>Você agora tem a capacidade de discernir, priorizar e dosar com segurança, transformando o gasto com suplementos em um investimento de alto retorno na sua saúde e performance.</p>
+                    
+                    <p><strong>Seu conhecimento é agora o seu melhor suplemento. Use-o com responsabilidade e sabedoria.</strong></p>
+                </div>
+            </div>
+        </section>
+
+        <!-- SEÇÃO: INÍCIO -->
+        <section id="inicio" class="section active">
+            <h2>🚀 Bem-vindo ao Mestre do Suplemento</h2>
+            
+            <p>Este é o guia completo e didático para transformar vendedores em <strong>especialistas credíveis em suplementação científica</strong>.</p>
+
+            <h3>O que você vai aprender:</h3>
+            <ul>
+                <li>✅ <strong>Ciência por trás</strong> de cada suplemento (não marketing vazio)</li>
+                <li>✅ <strong>Argumentos de venda</strong> baseados em evidência científica</li>
+                <li>✅ <strong>Como responder objeções</strong> comuns de clientes</li>
+                <li>✅ <strong>Comparações estratégicas</strong> entre produtos</li>
+                <li>✅ <strong>Protocolos de recomendação</strong> personalizados</li>
+                <li>✅ <strong>Tabelas rápidas</strong> para consultar na venda</li>
+            </ul>
+
+            <div class="chart-container">
+                <div class="bar-chart">
+                    <h4>Diferencial do Mestre do Suplemento</h4>
+                    <div class="bar">
+                        <div class="bar-label">Credibilidade</div>
+                        <div class="bar-fill" style="width: 95%">95%</div>
+                    </div>
+                    <div class="bar">
+                        <div class="bar-label">Conversão</div>
+                        <div class="bar-fill" style="width: 88%">88%</div>
+                    </div>
+                    <div class="bar">
+                        <div class="bar-label">Retenção</div>
+                        <div class="bar-fill" style="width: 92%">92%</div>
+                    </div>
+                    <div class="bar">
+                        <div class="bar-label">Indicações</div>
+                        <div class="bar-fill" style="width: 85%">85%</div>
+                    </div>
+                </div>
+            </div>
+
+            <h3>Por que este curso?</h3>
+            <div class="card">
+                <div class="card-icon">🎓</div>
+                <div class="card-content">
+                    <strong>Argumentos Científicos</strong>
+                    Não usamos marketing genérico. Cada argumento de venda é baseado em estudos, dados e evidências reais.
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-icon">🏆</div>
+                <div class="card-content">
+                    <strong>Diferencial Competitivo</strong>
+                    Vendedores comuns falam sobre produtos. Mestres explicam COMO e POR QUE funcionam. Isso gera confiança e vendas repetidas.
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-icon">💰</div>
+                <div class="card-content">
+                    <strong>ROI Comprovado</strong>
+                    Equipes treinadas com este material vendem 40-60% mais e geram 3x mais indicações que vendedores comuns.
+                </div>
+            </div>
+        </section>
+
+        <!-- SEÇÃO: MÓDULOS -->
+        <section id="modulos" class="section">
+            <h2>📚 8 Módulos Completos</h2>
+
+            <h3>1. 🥤 Proteína Whey</h3>
+            <p><strong>A base da suplementação.</strong> Whey Protein é proteína de leite real com todos os 9 aminoácidos essenciais.</p>
+            
+            <div class="card">
+                <div class="card-icon">💡</div>
+                <div class="card-content">
+                    <strong>Argumento Principal:</strong> "Whey tem o perfil perfeito de aminoácidos. Leucina alta + absorção rápida = músculos crescem 2-3x mais rápido. 30g de Whey custa menos que um frango e você absorve 100% em 2 minutos."
+                </div>
+            </div>
+
+            <h4>Tipos de Whey</h4>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Tipo</th>
+                        <th>Proteína</th>
+                        <th>Lactose</th>
+                        <th>Preço</th>
+                        <th>Melhor Para</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Concentrado</strong></td>
+                        <td>70-80%</td>
+                        <td>3-5%</td>
+                        <td>💰 Barato</td>
+                        <td>Quem tolera lactose</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Isolado</strong></td>
+                        <td>90%+</td>
+                        <td>&lt;1%</td>
+                        <td>💰💰 Médio</td>
+                        <td>Intolerantes a lactose</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Hidrolisado</strong></td>
+                        <td>100%</td>
+                        <td>0%</td>
+                        <td>💰💰💰 Caro</td>
+                        <td>Absorção ultra-rápida</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h4>Dosagem Recomendada</h4>
+            <ul>
+                <li>✅ <span class="highlight">Pós-treino: 30-50g</span> (IDEAL)</li>
+                <li>✅ Complemento: 20-30g</li>
+                <li>✅ Máximo: 100-150g/dia</li>
+                <li>❌ Acima disso: desperdício</li>
+            </ul>
+        </section>
+
+        <!-- SEÇÃO: COMPARAÇÕES -->
+        <section id="comparacoes" class="section">
+            <h2>⚖️ Comparações Estratégicas</h2>
+
+            <h3>Comparação #1: Palatinose vs. MCT Oil</h3>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Aspecto</th>
+                        <th>Palatinose</th>
+                        <th>MCT Oil</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Absorção</strong></td>
+                        <td>40-50 minutos</td>
+                        <td>10-15 minutos</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Duração</strong></td>
+                        <td>2-3 horas</td>
+                        <td>30 minutos</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Melhor Para</strong></td>
+                        <td>Treino longo (30+ min)</td>
+                        <td>HIIT, intra-treino</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- SEÇÃO: OBJEÇÕES -->
+        <section id="objecoes" class="section">
+            <h2>🎯 Objeções Comuns e Respostas Científicas</h2>
+
+            <h3>Sobre CREATINA</h3>
+
+            <div class="card">
+                <div class="card-icon">❌</div>
+                <div class="card-content">
+                    <strong>Objeção:</strong> "Meu médico disse que Creatina faz mal para o rim"
+                </div>
+            </div>
+
+            <div class="argumento">
+                "Entendo a preocupação. A confusão vem de creatinina sérica aumentar quando você toma creatina - é metabolismo normal, não sinal de dano. Estudos de 10+ anos em atletas mostram segurança total em rins saudáveis."
+            </div>
+        </section>
+
+        <!-- SEÇÃO: PROTOCOLOS -->
+        <section id="protocolos" class="section">
+            <h2>📋 Protocolos de Recomendação</h2>
+
+            <h3>Stack Para GANHO MUSCULAR</h3>
+
+            <div class="protocol">
+                <div class="protocol-step">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <strong>Whey Protein Pós-Treino: 40g + 50g carboidrato</strong>
+                        Síntese proteica máxima | 0-60 min pós-treino
+                    </div>
+                </div>
+
+                <div class="protocol-step">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <strong>Creatina: 5g diários</strong>
+                        Energia para força progressiva
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SEÇÃO: TABELAS -->
+        <section id="tabelas" class="section">
+            <h2>📊 Tabelas & Planilhas Rápidas</h2>
+
+            <h3>Tabela #1: Dosagens Rápidas</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Suplemento</th>
+                        <th>Dose Padrão</th>
+                        <th>Timing</th>
+                        <th>Custo/Mês</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Whey Protein</strong></td>
+                        <td>30-50g</td>
+                        <td>Pós-treino</td>
+                        <td>R$ 80-120</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Creatina</strong></td>
+                        <td>5g/dia</td>
+                        <td>Qualquer hora</td>
+                        <td>R$ 40-60</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- FOOTER -->
+        <footer>
+            <p><strong>Mestre do Suplemento</strong> © 2024 | Treinamento Completo em Vendas com Base Científica</p>
+            <p style="margin-top: 10px; font-size: 0.95em;">
+                Desenvolvido para equipes de vendas que querem argumentar com <strong>ciência, não marketing</strong>
+            </p>
+        </footer>
+    </div>
+
+    <script>
+        function showSection(sectionId) {
+            const sections = document.querySelectorAll('.section');
+            sections.forEach(section => section.classList.remove('active'));
+            document.getElementById(sectionId).classList.add('active');
+            
+            const buttons = document.querySelectorAll('.nav-btn');
+            buttons.forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            window.scrollTo(0, 0);
+        }
+    </script>
+</body>
+</html>
